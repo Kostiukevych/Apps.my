@@ -22,6 +22,6 @@ dependencyResolutionManagement {
   }
 }
 
-rootProject.name = "3D Mixamo"
+rootProject.name = "3D Mixamo Viewer"
 
 include(":app")

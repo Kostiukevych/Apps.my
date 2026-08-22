@@ -17,33 +17,9 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Job 1: Deploy Web 3D Viewer to GitHub Pages
-  deploy-pages:
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-        with:
-          enablement: true
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: '.'
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-
-  # Job 2: Build Android APK
+  # Job 1: Build Android APK
   build-android:
+    name: Build Android APK
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -55,11 +31,19 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Setup Gradle 9.3.1
+      - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '9.3.1'
           cache-read-only: false
+
+      - name: Prepare Environment Files
+        run: |
+          if [ ! -f ".env.example" ]; then
+            echo "GEMINI_API_KEY=" > .env.example
+          fi
+          if [ ! -f ".env" ]; then
+            touch .env
+          fi
 
       - name: Prepare Android Keystore
         run: |
@@ -93,7 +77,34 @@ jobs:
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: mixamo-3d-explorer-debug-apk
+          name: 3d-mixamo-viewer-apk
           path: app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
           retention-days: 30
+
+  # Job 2: Deploy Web 3D Viewer to GitHub Pages
+  deploy-pages:
+    name: Deploy to GitHub Pages (Web)
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+        continue-on-error: true
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'app/src/main/assets'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
