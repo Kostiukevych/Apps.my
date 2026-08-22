@@ -40,11 +40,10 @@ jobs:
       - name: 🛠️ Regenerate Gradle Wrapper (fix corrupt jar)
         run: gradle wrapper --gradle-version 9.3.1 --distribution-type=all
 
-      - name: ⚙️ Prepare Environment & Secrets Files
+      - name: ⚙️ Prepare Environment Files
         run: |
-          echo "Preparing .env and .env.example..."
-          echo 'GEMINI_API_KEY=""' > .env.example
-          echo 'GEMINI_API_KEY=""' > .env
+          echo "Preparing environment files..."
+          touch .env.example .env
 
       - name: 🔑 Prepare Android Keystore
         run: |
