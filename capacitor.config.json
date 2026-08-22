@@ -1,0 +1,9 @@
+{
+  "appId": "com.aistudio.mixamo3d.wvqzxp",
+  "appName": "3D Mixamo",
+  "webDir": ".",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  }
+}

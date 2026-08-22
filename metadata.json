@@ -1,0 +1,6 @@
+{
+  "name": "3D Mixamo Viewer",
+  "description": "Three.js 3D character viewer and room explorer with touch joystick controls, FPV/TPV camera modes, and FBX/GLTF asset loading.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

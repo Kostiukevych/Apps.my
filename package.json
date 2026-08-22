@@ -1,0 +1,15 @@
+{
+  "name": "threejs-mixamo-touch-viewer",
+  "version": "1.0.0",
+  "description": "Three.js 3D character viewer and room explorer with touch joystick controls, FPV/TPV camera modes, and FBX/GLTF asset loading.",
+  "scripts": {
+    "start": "npx serve .",
+    "cap:sync": "npx @capacitor/cli sync",
+    "cap:open": "npx @capacitor/cli open android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/cli": "^6.0.0",
+    "@capacitor/core": "^6.0.0"
+  }
+}
